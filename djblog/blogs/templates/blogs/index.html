@@ -7,10 +7,10 @@
 				{% for blog in blog_list %}
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h3><a href="">blog.title</a></h3>
+							<h3><a href="">{{ blog.title }}</a></h3>
 						</div>
 						<div class="panel-body">
-							<p>blog.blog_text</p>
+							<p>{{ blog.blog_text }}</p>
 						</div>
 					</div>
 				{% endfor %}

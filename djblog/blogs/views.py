@@ -16,10 +16,10 @@ from .models import Blog, Comment
 
 def index(request):
 
-    #blog_list = Blog.objects.all()
+    blog_list = Blog.objects.all()
 
     context = {
-        #'blog_list': blog_list,
+        'blog_list': blog_list,
         'user': request.user.username,
     }
 
@@ -46,7 +46,7 @@ def signup(request):
                 if user.is_active:
                     # Login User
                     django_login(request, user)
-                    return HttpResponse('User registration successful.')
+                    return HttpResponseRedirect('/')
         else:
             return HttpResponse("form data invalid.")
     else:
@@ -99,17 +99,17 @@ def add_blog(request):
 		blog_form = BlogAdditionForm(request.POST)
 
 		if blog_form.is_valid():
-			user = User.objects.get(username=request.user.username)
+			user = User.objects.get(username=request.user)
 			#user = get_user_model()
 			try:
-				blog = Blog.objects.create(title=blog_form.cleaned_data['title'],
-                            blog_text=blog_form.cleaned_data['blog_text'],
-                            user=user)
-				#blog.save()
+				blog = Blog(title=blog_form.cleaned_data['title'],
+                            blog_text=blog_form.cleaned_data['blog_text'])
+				blog.user = user
+				blog.save()
 
 				return HttpResponse('Blog Addition successful.')
-			except:
-				return HttpResponse('Blog addition failed.'+str(user))
+			except Exception, e:
+				return HttpResponse('Blog addition failed.'+str(e))
 		else:
 			return HttpResponse('invalid form data.')
 	else:
