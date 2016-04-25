@@ -22,7 +22,7 @@
 					</button>
 					<a class="navbar-brand" href="{% url 'blogs:index' %}">DjBlog</a>
 				</div>
-				<div class="navbar-collapse collapse">
+				<div class="navbar-collapse collapse navbar-right">
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="{% url 'blogs:signup' %}">Sign-Up</a></li>
 					</ul>
@@ -31,8 +31,8 @@
 		</div>
 
 		<div class="container">
-			<form action="{% url 'blogs:login' %}" method="post" class="form-signin" role="form">
-				<h2 class="form-siginin-heading">Please sign in</h2>
+			<form action="{% url 'blogs:login' %}" method="post" class="form-horizontal" role="form">
+				<h2 class="form-heading">Please sign in</h2>
 
 				{% csrf_token %}
 				<div class="form-group">
