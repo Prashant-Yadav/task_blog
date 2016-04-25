@@ -1,0 +1,66 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Sign-in</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="stylesheet" type="text/css" href="{% static 'blogs/css/bootstrap.min.css' %}">
+	</head>
+
+	<body>
+		<div class="navbar navbar-defualt navbar-static-top navbar-inverse">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="{% url 'blogs:index' %}">DjBlog</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="{% url 'blogs:signup' %}">Sign-Up</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<form action="{% url 'blogs:login' %}" method="post" class="form-signin" role="form">
+				<h2 class="form-siginin-heading">Please sign in</h2>
+
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="login_form.username.id_for_label" class="col-sm-2 control-label">
+						Username
+					</label>
+					<div class="col-sm-10">
+						{{ login_form.username }}
+					</div>
+				</div>
+
+				<div class="form-goup">
+					<label for="login_form.password.id_for_label" class="col-sm-2 control-label">
+						Password
+					</label>
+					<div class="col-sm-10">
+						{{ login_form.password }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<input type="submit" class="btn btn-action" name="userAuthentication" value="SignIn">
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<script type="text/javascript" src="{% static 'blogs/js/bootstrap.min.js' %}"></script>
+	</body>
+</html>

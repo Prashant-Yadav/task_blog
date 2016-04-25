@@ -1,0 +1,22 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Blog | Home</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="stylesheet" type="text/css" href="{% static 'blogs/css/bootstrap.min.css' %}">
+	</head>
+	<body>
+		
+		{% include 'blogs/header.html' %}
+
+		{% block content %}
+
+		{% endblock %}
+
+		<script type="text/javascript" src="{% static 'blogs/js/bootstrap.min.js' %}"></script>
+	</body>
+</html>

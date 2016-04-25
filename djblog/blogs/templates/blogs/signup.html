@@ -1,0 +1,102 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Sign-Up</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="stylesheet" type="text/css" href="{% static 'blogs/css/bootstrap.min.css' %}">
+	</head>
+	<body>
+		
+		<div class="navbar navbar-defualt navbar-static-top navbar-inverse">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="{% url 'blogs:index' %}">DjBlog</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="{% url 'blogs:login' %}">Already have an account?</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<form action="{% url 'blogs:signup' %}" method="POST" class="form-signin" role="form">
+				<h2 class="form-signin-heading">Please Register</h2>
+
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="signup_form.first_name.id_for_label" class="col-sm-2 control-label">
+						First Name
+					</label>
+					<div class="col-sm-10">
+						{{ signup_form.first_name }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="signup_form.last_name.id_for_label" class="col-sm-2 control-label">
+						Last Name
+					</label>
+					<div class="col-sm-10">
+						{{ signup_form.last_name }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="signup_form.username.id_for_label" class="col-sm-2 control-label">
+						Username
+					</label>
+					<div class="col-sm-10">
+						{{ signup_form.username }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="signup_form.email.id_for_label" class="col-sm-2 control-label">
+						Email
+					</label>
+					<div class="col-sm-10">
+						{{ signup_form.email }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="signup_form.password.id_for_label" class="col-sm-2 control-label">
+						Password
+					</label>
+					<div class="col-sm-10">
+						{{ signup_form.password }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="signup_form.confirm_password.id_for_label" class="col-sm-2 control-label">
+						Confirm Password
+					</label>
+					<div class="col-sm-10">
+						{{ signup_form.confirm_password }}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<input class="btn btn-action" type="submit" name="userRegistraion" value="Register">
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<script type="text/javascript" src="{% static 'blogs/js/bootstrap.min.js' %}"></script>
+	</body>
+</html>

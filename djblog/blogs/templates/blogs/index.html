@@ -1,0 +1,29 @@
+{% extends 'blogs/base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="panel-group">
+			{% if blog_list %}
+				{% for blog in blog_list %}
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3><a href="">blog.title</a></h3>
+						</div>
+						<div class="panel-body">
+							<p>blog.blog_text</p>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3>There are no blogs right now.</h3>
+					</div>
+					<div class="panel-heading">
+						<p><a href="">Add a new blog</a></p>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

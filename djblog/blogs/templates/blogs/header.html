@@ -1,0 +1,27 @@
+{% load staticfiles %}
+
+<div class="navbar navbar-defualt navbar-static-top navbar-inverse">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="{% url 'blogs:index' %}">DjBlog</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="active"><a href="{% url 'blogs:index' %}">HOME</a></li>
+
+				{% if user %}
+					<li><a href="">SignOut</a></li>
+				{% else %}
+					<li><a href="{% url 'blogs:login' %}">SignIn</a></li>
+					or
+					<li><a href="{% url 'blogs:signup' %}">SignUp</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</div>
