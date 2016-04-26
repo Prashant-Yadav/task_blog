@@ -17,7 +17,7 @@
 				{% if user %}
 					<li><a href="{% url 'blogs:logout' %}">SignOut</a></li>
 				{% else %}
-					<li><a href="{% url 'blogs:login' %}">SignIn</a></li>
+					<li><a href="{% url 'blogs:login' %}?next={% firstof request.path '/' %}">SignIn</a></li>
 					<li><a href="{% url 'blogs:signup' %}">SignUp</a></li>
 				{% endif %}
 			</ul>

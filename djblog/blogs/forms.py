@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 from django.utils.translation import ugettext_lazy as _
 
+from .models import Blog
 
 class UserRegistrationForm(forms.Form):
     username = forms.RegexField(regex=r'^\w+$',
@@ -46,8 +47,12 @@ class CommentAdditionForm(forms.Form):
                                        attrs=dict(required=True, rows=3)))
 
 
-class BlogUpdateForm(forms.Form):
+class BlogUpdateForm(forms.ModelForm):
+    '''
     title = forms.CharField(widget=forms.TextInput(
         attrs=dict(required=True, max_length=40)))
     blog_text = forms.CharField(
-        widget=forms.Textarea(attrs=dict(required=True)))
+        widget=forms.Textarea(attrs=dict(required=True)))'''
+    class Meta:
+        model = Blog
+        fields = ['title', 'blog_text']

@@ -1,5 +1,9 @@
 {% extends 'blogs/base.html' %}
 
+{% block title %}
+	<title>Blog | Home</title>		
+{% endblock %}
+
 {% block content %}
 	<div class="container">
 		<div class="panel-group">
@@ -22,6 +26,9 @@
 					<div class="panel-heading">
 						<h3>There are no blogs right now.</h3>
 					</div>
+
+					<hr>
+					
 					<div class="panel-heading">
 						<p><a href="{% url 'blogs:add_blog' %}">Add a new blog</a></p>
 					</div>

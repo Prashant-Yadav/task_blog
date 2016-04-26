@@ -10,13 +10,13 @@ from django.contrib.auth import (login as django_login,
                                  get_user_model)
 from django.contrib.auth.decorators import login_required
 
-from .forms import UserRegistrationForm, AuthenticationForm, BlogAdditionForm, CommentAdditionForm
+from .forms import UserRegistrationForm, AuthenticationForm, BlogAdditionForm, CommentAdditionForm, BlogUpdateForm
 from .models import Blog, Comment
 
 
 def index(request):
 
-    blog_list = Blog.objects.all()
+    blog_list = Blog.objects.all().order_by('-created')
 
     context = {
         'blog_list': blog_list,
@@ -71,7 +71,6 @@ def login(request):
                 if user is not None:
                     if user.is_active:
                         django_login(request, user)
-                        user = User.objects.get(username=username)
                         return HttpResponseRedirect('/')
             except:
                 return HttpResponse("invalid Login.")
@@ -125,39 +124,87 @@ def add_blog(request):
 @csrf_protect
 def blog_view(request, blog_id):
 
-	is_blog_owner = False
-	blog = Blog.objects.get(id=blog_id)
-	comments = Comment.objects.filter(blog=blog)
-	if request.method == 'POST':
-		comment_form = CommentAdditionForm(request.POST)
+    is_blog_owner = False
+    blog = Blog.objects.get(id=blog_id)
+    comments = Comment.objects.filter(blog=blog)
+    if request.method == 'POST':
+        comment_form = CommentAdditionForm(request.POST)
 
-		if comment_form.is_valid():
-			user = User.objects.get(username=request.user)
-			try:
-				comment = Comment(comment_text=comment_form.cleaned_data['comment_text'], user=user, blog=blog)
-				comment.save()
+        if comment_form.is_valid():
+            user = User.objects.get(username=request.user)
+            try:
+                comment = Comment(comment_text=comment_form.cleaned_data[
+                                  'comment_text'], user=user, blog=blog)
+                comment.save()
 
-				return HttpResponseRedirect('/blog_view/' + blog_id)
-			except Exception, e:
-				raise e
-		else:
-			return HttpResponse("comment data invalid")
-	else:
-		comment_form = CommentAdditionForm()
+                return HttpResponseRedirect('/blog_view/' + blog_id)
+            except Exception, e:
+                return HttpResponse('Comment addition failed: ' + str(e))
+        else:
+            return HttpResponse("comment data invalid")
+    else:
+        comment_form = CommentAdditionForm()
 
-	if blog.user == request.user:
-		is_blog_owner = True
+    if blog.user == request.user:
+        is_blog_owner = True
 
-	context = {
-		'comment_form': comment_form,
-		'blog': blog,
-		'comments': comments,
-		'user': request.user.username,
-		'blog_owner': is_blog_owner,
-	}
+    context = {
+        'comment_form': comment_form,
+        'blog': blog,
+        'comments': comments,
+        'user': request.user.username,
+        'blog_owner': is_blog_owner,
+    }
 
-	return render(request, 'blogs/blog_view.html', context)
+    return render(request, 'blogs/blog_view.html', context)
 
 
-@login_required
+@login_required(login_url='/login/')
 def edit_blog(request, blog_id):
+
+    blog = Blog.objects.get(id=blog_id)
+
+    if request.method == 'POST':
+        form = BlogUpdateForm(request.POST)
+
+        if form.is_valid():
+            user = User.objects.get(username=request.user)
+            try:
+                blog.title = form.cleaned_data['title']
+                blog.blog_text = form.cleaned_data['blog_text']
+                blog.save()
+
+                blog_id = blog.id
+
+                return HttpResponseRedirect('/blog_view/' + blog_id)
+
+            except Exception, e:
+                return HttpResponse('Blog updation failed: ' + str(e))
+        else:
+            return HttpResponse('invalid form data.')
+    else:
+        form = BlogUpdateForm(instance=blog)
+
+    context = {
+        'form': form,
+        'blog': blog,
+        'user': request.user.username,
+    }
+
+    return render(request, 'blogs/edit_blog.html', context)
+
+
+@login_required(login_url='/login/')
+def delete_blog(request, blog_id):
+
+    blog = Blog.objects.get(id=blog_id)
+    comments = Comment.objects.filter(blog=blog)
+
+    for comment in comments:
+        comment.delete()
+
+    blog.delete()
+
+    context = {}
+
+    return render(request, 'blogs/delete_blog.html', context)
