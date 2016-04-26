@@ -7,13 +7,16 @@
 				{% for blog in blog_list %}
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h3><a href="">{{ blog.title }}</a></h3>
+							<h3><a href="{% url 'blogs:blog_view' blog.id %}">{{ blog.title }}</a></h3>
 						</div>
 						<div class="panel-body">
 							<p>{{ blog.blog_text }}</p>
 						</div>
 					</div>
 				{% endfor %}
+				{% if user %}
+					<a class="btn btn-primary" href="{% url 'blogs:add_blog' %}">Add New Blog</a>	
+				{% endif %}
 			{% else %}
 				<div class="panel panel-default">
 					<div class="panel-heading">

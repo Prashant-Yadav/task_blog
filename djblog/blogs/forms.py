@@ -38,3 +38,16 @@ class BlogAdditionForm(forms.Form):
         attrs=dict(required=True, max_length=40)))
     blog_text = forms.CharField(
         widget=forms.Textarea(attrs=dict(required=True)))
+
+
+class CommentAdditionForm(forms.Form):
+    comment_text = forms.CharField(label="Add Comment",
+                                   widget=forms.Textarea(
+                                       attrs=dict(required=True, rows=3)))
+
+
+class BlogUpdateForm(forms.Form):
+    title = forms.CharField(widget=forms.TextInput(
+        attrs=dict(required=True, max_length=40)))
+    blog_text = forms.CharField(
+        widget=forms.Textarea(attrs=dict(required=True)))

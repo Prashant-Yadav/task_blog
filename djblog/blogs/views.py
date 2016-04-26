@@ -10,7 +10,7 @@ from django.contrib.auth import (login as django_login,
                                  get_user_model)
 from django.contrib.auth.decorators import login_required
 
-from .forms import UserRegistrationForm, AuthenticationForm, BlogAdditionForm
+from .forms import UserRegistrationForm, AuthenticationForm, BlogAdditionForm, CommentAdditionForm
 from .models import Blog, Comment
 
 
@@ -95,26 +95,69 @@ def logout(request):
 @login_required(login_url='/login/')
 def add_blog(request):
 
-	if request.method == 'POST':
-		blog_form = BlogAdditionForm(request.POST)
+    if request.method == 'POST':
+        blog_form = BlogAdditionForm(request.POST)
 
-		if blog_form.is_valid():
-			user = User.objects.get(username=request.user)
-			#user = get_user_model()
-			try:
-				blog = Blog(title=blog_form.cleaned_data['title'],
+        if blog_form.is_valid():
+            user = User.objects.get(username=request.user)
+            try:
+                blog = Blog(title=blog_form.cleaned_data['title'],
                             blog_text=blog_form.cleaned_data['blog_text'])
-				blog.user = user
-				blog.save()
+                blog.user = user
+                blog.save()
 
-				return HttpResponse('Blog Addition successful.')
+                blog_id = blog.id
+
+                return HttpResponseRedirect('/')
+
+            except Exception, e:
+                return HttpResponse('Blog addition failed.' + str(e))
+        else:
+            return HttpResponse('invalid form data.')
+    else:
+        blog_form = BlogAdditionForm()
+
+    return render_to_response('blogs/add_blog.html', {
+        'form': blog_form
+    }, context_instance=RequestContext(request))
+
+
+@csrf_protect
+def blog_view(request, blog_id):
+
+	is_blog_owner = False
+	blog = Blog.objects.get(id=blog_id)
+	comments = Comment.objects.filter(blog=blog)
+	if request.method == 'POST':
+		comment_form = CommentAdditionForm(request.POST)
+
+		if comment_form.is_valid():
+			user = User.objects.get(username=request.user)
+			try:
+				comment = Comment(comment_text=comment_form.cleaned_data['comment_text'], user=user, blog=blog)
+				comment.save()
+
+				return HttpResponseRedirect('/blog_view/' + blog_id)
 			except Exception, e:
-				return HttpResponse('Blog addition failed.'+str(e))
+				raise e
 		else:
-			return HttpResponse('invalid form data.')
+			return HttpResponse("comment data invalid")
 	else:
-		blog_form = BlogAdditionForm()
+		comment_form = CommentAdditionForm()
 
-	return render_to_response('blogs/add_blog.html', {
-		'form': blog_form
-	}, context_instance=RequestContext(request))
+	if blog.user == request.user:
+		is_blog_owner = True
+
+	context = {
+		'comment_form': comment_form,
+		'blog': blog,
+		'comments': comments,
+		'user': request.user.username,
+		'blog_owner': is_blog_owner,
+	}
+
+	return render(request, 'blogs/blog_view.html', context)
+
+
+@login_required
+def edit_blog(request, blog_id):

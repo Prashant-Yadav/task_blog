@@ -15,7 +15,6 @@
 				<li class="active"><a href="{% url 'blogs:index' %}">HOME</a></li>
 
 				{% if user %}
-
 					<li><a href="{% url 'blogs:logout' %}">SignOut</a></li>
 				{% else %}
 					<li><a href="{% url 'blogs:login' %}">SignIn</a></li>

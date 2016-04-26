@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^add_blog/$', views.add_blog, name='add_blog'),
+    url(r'^blog_view/(?P<blog_id>[0-9]+)/$', views.blog_view, name='blog_view'),
+    url(r'^edit_blog/(?P<blog_id>[0-9]+)/$')
 ]
