@@ -6,34 +6,40 @@
 
 {% block content %}
 	<div class="container">
-		<div class="panel-group">
-			{% if blog_list %}
-				{% for blog in blog_list %}
+		<div class="col-sm-9">
+			<div class="panel-group">
+				{% if blog_list %}
+					{% for blog in blog_list %}
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3><a href="{% url 'blogs:blog_view' blog.id %}">{{ blog.title }}</a></h3>
+							</div>
+							<div class="panel-body" style="max-height:70px;">
+								<p>{{ blog.blog_text }}</p>
+							</div>
+						</div>
+
+						<hr>
+
+					{% endfor %}
+					{% if user %}
+						<a class="btn btn-primary" href="{% url 'blogs:add_blog' %}">Add New Blog</a>	
+					{% endif %}
+				{% else %}
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h3><a href="{% url 'blogs:blog_view' blog.id %}">{{ blog.title }}</a></h3>
+							<h3>There are no blogs right now.</h3>
 						</div>
-						<div class="panel-body">
-							<p>{{ blog.blog_text }}</p>
-						</div>
-					</div>
-				{% endfor %}
-				{% if user %}
-					<a class="btn btn-primary" href="{% url 'blogs:add_blog' %}">Add New Blog</a>	
-				{% endif %}
-			{% else %}
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3>There are no blogs right now.</h3>
-					</div>
 
-					<hr>
-					
-					<div class="panel-heading">
-						<p><a href="{% url 'blogs:add_blog' %}">Add a new blog</a></p>
+						<hr>
+						
+						<div class="panel-heading">
+							<p><a href="{% url 'blogs:add_blog' %}">Add a new blog</a></p>
+						</div>
 					</div>
-				</div>
-			{% endif %}
+				{% endif %}
+			</div>	
 		</div>
+		
 	</div>
 {% endblock %}

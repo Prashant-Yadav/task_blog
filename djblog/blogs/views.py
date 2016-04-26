@@ -6,11 +6,14 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
 from django.contrib.auth import (login as django_login,
                                  authenticate,
-                                 logout as django_logout,
-                                 get_user_model)
+                                 logout as django_logout)
 from django.contrib.auth.decorators import login_required
 
-from .forms import UserRegistrationForm, AuthenticationForm, BlogAdditionForm, CommentAdditionForm, BlogUpdateForm
+from .forms import (UserRegistrationForm,
+                    AuthenticationForm,
+                    BlogAdditionForm,
+                    CommentAdditionForm,
+                    BlogUpdateForm)
 from .models import Blog, Comment
 
 
@@ -48,7 +51,7 @@ def signup(request):
                     django_login(request, user)
                     return HttpResponseRedirect('/')
         else:
-            return HttpResponse("form data invalid.")
+            return HttpResponseRedirect('/invalid_data/')
     else:
         signup_form = UserRegistrationForm()
 
@@ -112,7 +115,7 @@ def add_blog(request):
             except Exception, e:
                 return HttpResponse('Blog addition failed.' + str(e))
         else:
-            return HttpResponse('invalid form data.')
+            return HttpResponseRedirect('/invalid_data/')
     else:
         blog_form = BlogAdditionForm()
 
@@ -141,7 +144,7 @@ def blog_view(request, blog_id):
             except Exception, e:
                 return HttpResponse('Comment addition failed: ' + str(e))
         else:
-            return HttpResponse("comment data invalid")
+            return HttpResponseRedirect('/invalid_data/')
     else:
         comment_form = CommentAdditionForm()
 
@@ -181,7 +184,7 @@ def edit_blog(request, blog_id):
             except Exception, e:
                 return HttpResponse('Blog updation failed: ' + str(e))
         else:
-            return HttpResponse('invalid form data.')
+            return HttpResponseRedirect('/invalid_data/')
     else:
         form = BlogUpdateForm(instance=blog)
 
@@ -208,3 +211,10 @@ def delete_blog(request, blog_id):
     context = {}
 
     return render(request, 'blogs/delete_blog.html', context)
+
+
+def invalid_data(request):
+
+    context = {}
+
+    return render(request, 'blogs/invalid_data.html', context)
