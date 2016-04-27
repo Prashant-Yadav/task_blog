@@ -179,7 +179,7 @@ def edit_blog(request, blog_id):
 
                 blog_id = blog.id
 
-                return HttpResponseRedirect('/blog_view/' + blog_id)
+                return HttpResponseRedirect('/')
 
             except Exception, e:
                 return HttpResponse('Blog updation failed: ' + str(e))
