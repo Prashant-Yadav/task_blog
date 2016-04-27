@@ -1,1 +1,1 @@
-web: sh -C 'cd djblog/ && gunicorn djblog.wsgi:application'
+web: gunicorn --pythonpath djblog djblog.wsgi:application
