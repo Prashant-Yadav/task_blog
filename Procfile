@@ -1,1 +1,1 @@
-web: gunicorn djblog:wsgi
+web: sh -C 'cd djblog/ && gunicorn djblog.wsgi:application'
